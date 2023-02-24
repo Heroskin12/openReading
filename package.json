@@ -11,6 +11,7 @@
   "author": "Jamie Furlong",
   "license": "ISC",
   "dependencies": {
+    "bootstrap-icons": "^1.10.3",
     "dotenv": "^16.0.3",
     "ejs": "^3.1.8",
     "ejs-mate": "^4.0.0",

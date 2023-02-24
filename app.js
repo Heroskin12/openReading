@@ -18,7 +18,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/readings", (req, res) => {
-  res.send("Congratulations. You submitted a get request for schools.");
+  res.render("readings/readings");
 });
 
 app.get("/readings/new", (req, res) => {
@@ -31,6 +31,30 @@ app.get("/readings/:id", (req, res) => {
 
 app.get("/readings/:id/edit", (req, res) => {
   res.send("Now you can edit the reading too!");
+});
+
+app.get("/lessons", (req, res) => {
+  res.send("Here you can view all lesson plans!");
+});
+
+app.get("/lessons/new", (req, res) => {
+  res.send("Here you can create a new lesson plan!");
+});
+
+app.get("/lessons/:id", (req, res) => {
+  res.send("Here you can view a specific lesson plan!");
+});
+
+app.get("lessons/:id/edit", (req, res) => {
+  res.send("Here you can edit a lesson plan!");
+});
+
+app.get("/all", (req, res) => {
+  res.send("This page will display both texts and plans!");
+});
+
+app.get("/surprise", (req, res) => {
+  res.send("This text will give you a random text or lesson plan!");
 });
 
 app.get("/register", (req, res) => {
