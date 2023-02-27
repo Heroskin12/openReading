@@ -1,10 +1,4 @@
-modules.exports.beginnings = [
-  "Enchanted",
-  "Lost",
-  "Mysterious",
-  "Forgotten",
-  "Hidden",
-  "Cursed",
+module.exports.beginnings = [
   "Haunted",
   "Abandoned",
   "Lonely",
@@ -57,8 +51,7 @@ modules.exports.beginnings = [
   "Inquisitive",
 ];
 
-modules.exports.endings = [
-  "Castle",
+module.exports.endings = [
   "Forest",
   "Island",
   "Mansion",

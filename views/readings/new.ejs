@@ -1,1 +1,42 @@
 <% layout('layout/boilerplate') -%>
+
+<form action="/readings" method="POST">
+    <div class="mb-3">
+        <label for="title" class="form-label">What will the text be about?</label>
+        <input type="text" name="reading[title]" id="title" placeholder="A fictional story of how the dinosaurs disappeared..." class="form-control">
+    </div>
+
+    <div class="mb-3">
+        <label for="age" class="form-label">What level are your students?</label>
+        <select id="age" name="reading[age]" class="form-select"aria-label="Age of student">
+            <option value="" selected disabled>Choose an age bracket...</option>
+            <option value="Kindergarten">Kindergarten</option>
+            <option value="Middle School">Middle School</option>
+            <option value="High School">High School</option>
+            <option value="Adult">Adult</option>
+            <option value="Business">Business / Professional</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="level" class="form-label">What level are your students?</label>
+        <select id="level" name="reading[level]" class="form-select"aria-label="Level of student">
+            <option value="" selected disabled>Choose a level...</option>
+            <option value="A1">A1</option>
+            <option value="A2">A2</option>
+            <option value="B1">B1</option>
+            <option value="B2">B2</option>
+            <option value="C1">C1</option>
+            <option value="C2">C2</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="language" class="form-label">What language should the text be written in?</label>
+        <select name="reading[language]" id="language" class="form-select">
+            <%- include ('../partials/languages.ejs') %>
+        </select>
+    </div>
+
+    <button class="btn btn-danger w-100">Submit</button>
+</form>

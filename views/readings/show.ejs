@@ -1,1 +1,43 @@
 <% layout('layout/boilerplate') -%>
+<a href="/readings"><-- Back</a>
+<div class="row">
+  <section id="readingText" class="col">
+    <h1><%= reading.title %></h1>
+    <div class="metaInfo">
+      <p class="text-muted">
+        Level: <%= reading.level %> | Age: <%= reading.age %> | Created on: <%= reading.date %>
+      </p>
+      <form action="/readings/<%=reading._id%>?_method=DELETE" method="POST" class="d-inline">
+        <button class="btn btn-danger">Delete Text</button>
+      </form>     
+      <a href="/readings/<%=reading._id%>/edit" class="btn btn-success">Edit Text</a> 
+    </div>
+    <div class="d-flex my-5">
+      <p class="lead pe-5"><%=reading.body %></p>
+      <img src="<%= reading.image %>" alt="Feature image of the story." class="w-50 h-30">
+    </div>
+  </section>
+      
+
+      <!-- <div class="card mb-5" style="width: 18rem;">
+          <img src="https://source.unsplash.com/collection/483251" class="card-img-top" alt="">
+          <div class="card-body">
+            <h5 class="card-title"><%= reading.title %></h5>
+            <p class="card-text"><%= reading.body %></p>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item text-muted">Level: <%= reading.level %></li>
+            <li class="list-group-item">Age: <%= reading.age %></li>
+          </ul>
+          <div class="card-body">
+            <form action="/readings/<%=reading._id%>?_method=DELETE" method="POST" class="d-inline">
+              <button class="btn btn-danger">Delete Text</button>
+            </form>     
+            <a href="/readings/:id/edit" class="btn btn-success">Edit Text</a> 
+          </div>
+          <div class="card-footer text-muted">
+            <%= reading.date %>
+          </div>
+      </div>     -->
+    
+</div>
