@@ -1,16 +1,19 @@
 <% layout('layout/boilerplate') -%>
 
-<form action="/readings/<%=reading._id%>?_method=PUT" method="POST">
+<form action="/readings/<%=reading._id%>?_method=PUT" method="POST" novalidate class="validate-form">
     <div class="mb-3">
         <label for="title" class="form-label">Name of Text</label>
-        <input type="text" name="reading[title]" id="title" value="<%=reading.title%>" class="form-control">
+        <input type="text" name="reading[title]" id="title" value="<%=reading.title%>" class="form-control" required>
     </div>
 
     <div class="mb-3">
         <label for="age" class="form-label">What level are your students?</label>
-        <select id="age" name="reading[age]" class="form-select"aria-label="Age of student">
-            <option value="" selected disabled>Choose an age bracket...</option>
-            <option value="Kindergarten">Kindergarten</option>
+        <select id="age" name="reading[age]" class="form-select"aria-label="Age of student" required>
+            <option value="" disabled>Choose an age bracket...</option>
+            <% for (let age of ages.age) { %>
+                <option value="<%= age %>" <%= reading.age === age ? 'selected': '' %>><%= age %></option>
+
+            <% } %>
             <option value="Middle School">Middle School</option>
             <option value="High School">High School</option>
             <option value="Adult">Adult</option>
@@ -20,28 +23,39 @@
 
     <div class="mb-3">
         <label for="level" class="form-label">What level are your students?</label>
-        <select id="level" name="reading[level]" class="form-select"aria-label="Level of student">
-            <option value="" selected disabled>Choose a level...</option>
-            <option value="A1">A1</option>
-            <option value="A2">A2</option>
-            <option value="B1">B1</option>
-            <option value="B2">B2</option>
-            <option value="C1">C1</option>
-            <option value="C2">C2</option>
+        <select id="level" name="reading[level]" class="form-select"aria-label="Level of student" required>
+            <option value="" disabled>Choose a level...</option>
+            <% for (let level of levels.level) { %>
+                <option value="<%= level %>" <%= reading.level === level ? 'selected': '' %>><%= level %></option>
+
+            <% } %>
         </select>
     </div>
 
     <div class="mb-3">
         <label for="language" class="form-label">What language should the text be written in?</label>
-        <select name="reading[language]" id="language" class="form-select">
-            <%- include ('../partials/languages.ejs') %>
+        <select name="reading[language]" id="language" class="form-select" required>
+            <option value="" disabled>Choose a language...</option>
+            <% for (let language of languages.languages) { %>
+                <option value="<%= language.code %>" <%= reading.language === language.code ? 'selected': '' %>><%= language.name %>
+            <% } %>
         </select>
     </div>
 
     <div class="mb-3">
-        <label for="body" class="form-label">Edit the text below.</label>
-        <textarea name="reading[body]" id="body" cols="30" rows="10" class="form-control"><%=reading.body%></textarea>
+        <label for="words" class="form-label">How many words should the text be?</label>
+        <input type="number" class="form-control" name="reading[words]" id="words" required>
     </div>
 
-    <button class="btn btn-danger w-100">Submit</button>
+    <div class="mb-3">
+        <label for="body" class="form-label">Edit the text below.</label>
+        <textarea name="reading[body]" id="body" cols="30" rows="20" class="form-control" required><%=reading.body%></textarea>
+    </div>
+
+    <div class="mb-3">
+
+        <button class="btn btn-danger w-100">Submit</button>
+    </div>
 </form>
+
+<script src="/javascripts/validateForms.js"></script>

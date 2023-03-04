@@ -33,6 +33,7 @@ async function seedDB() {
       date: Date.now(),
       age: age[Math.floor(Math.random() * 5)],
       level: level[Math.floor(Math.random() * 6)],
+      words: Math.floor(Math.random() * 500),
     });
     await story.save();
   }

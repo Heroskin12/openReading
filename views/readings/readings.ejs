@@ -1,8 +1,9 @@
 <% layout('layout/boilerplate') -%>
+<a href="/readings/new">Add a Reading</a>
 <div class="row">
   <% for (let reading of readings) { %>
-    <div class="col-lg-3">
-      <div class="card mb-5" style="width: 18rem;">
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="card mb-5" >
           <img src="https://source.unsplash.com/collection/483251" class="card-img-top" alt="">
           <div class="card-body">
             <h5 class="card-title"><%= reading.title %></h5>

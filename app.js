@@ -14,7 +14,9 @@ app.use(express.urlencoded({ extended: true }));
 app.engine("ejs", engine);
 app.use(methodOverride("_method"));
 const dbURL = process.env.DB_URL;
-
+const languages = require("./seeds/languages.js");
+const ages = require("./seeds/age.js");
+const levels = require("./seeds/level.js");
 mongoose.set("strictQuery", true);
 
 mongoose.connect(dbURL);
@@ -46,13 +48,14 @@ app.get("/readings", async (req, res) => {
 
 app.post("/readings", async (req, res) => {
   const reading = new Story(req.body.reading);
-  const visiblePrompt = `You requested a text about ${reading.title} in ${reading.language}. This text will be for suitable for ${reading.age} of ${reading.level} level.`;
-  const prompt = `Write a text about ${reading.title} in ${reading.language}. The text should be suitable for ${reading.age}. The people reading the text will have an ${reading.level} level of English.`;
+  const visiblePrompt = `You requested a ${reading.words}-word text about ${reading.title} in ${reading.language}. This text will be for suitable for ${reading.age} of ${reading.level} level.`;
+  const prompt = `Write a text about ${reading.title} in ${reading.language}. The text should be suitable for ${reading.age}. The people reading the text will have an ${reading.level} level of English. The text will have a total of ${reading.words} words.`;
+
   try {
     const completion = await openai.createCompletion({
       model: "text-davinci-003",
       prompt: prompt,
-      temperature: 0.6,
+      temperature: 1,
       max_tokens: 3000,
     });
     reading.body = completion.data.choices[0].text;
@@ -101,7 +104,8 @@ app.get("/readings/:id/edit", async (req, res) => {
   const { id } = req.params;
   console.log(id);
   const reading = await Story.findById(id);
-  res.render("readings/edit", { reading });
+  console.log(languages);
+  res.render("readings/edit", { reading, ages, levels, languages });
 });
 
 app.delete("/readings/:id", async (req, res) => {

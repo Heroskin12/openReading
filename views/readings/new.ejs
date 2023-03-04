@@ -1,14 +1,19 @@
 <% layout('layout/boilerplate') -%>
-
-<form action="/readings" method="POST">
+<form action="/readings" method="POST" novalidate class="validate-form">
     <div class="mb-3">
         <label for="title" class="form-label">What will the text be about?</label>
-        <input type="text" name="reading[title]" id="title" placeholder="A fictional story of how the dinosaurs disappeared..." class="form-control">
+        <input type="text" name="reading[title]" id="title" placeholder="A fictional story of how the dinosaurs disappeared..." class="form-control" required>
+        <div class="valid-feedback">
+            Looks good!
+          </div>
+          <div class="invalid-feedback">
+            Please choose a title.
+          </div>
     </div>
 
     <div class="mb-3">
         <label for="age" class="form-label">What level are your students?</label>
-        <select id="age" name="reading[age]" class="form-select"aria-label="Age of student">
+        <select id="age" name="reading[age]" class="form-select"aria-label="Age of student" required>
             <option value="" selected disabled>Choose an age bracket...</option>
             <option value="Kindergarten">Kindergarten</option>
             <option value="Middle School">Middle School</option>
@@ -16,11 +21,17 @@
             <option value="Adult">Adult</option>
             <option value="Business">Business / Professional</option>
         </select>
+        <div class="valid-feedback">
+            Looks good!
+          </div>
+          <div class="invalid-feedback">
+            Please choose an age.
+          </div>
     </div>
 
     <div class="mb-3">
         <label for="level" class="form-label">What level are your students?</label>
-        <select id="level" name="reading[level]" class="form-select"aria-label="Level of student">
+        <select id="level" name="reading[level]" class="form-select"aria-label="Level of student" required>
             <option value="" selected disabled>Choose a level...</option>
             <option value="A1">A1</option>
             <option value="A2">A2</option>
@@ -29,14 +40,39 @@
             <option value="C1">C1</option>
             <option value="C2">C2</option>
         </select>
+        <div class="valid-feedback">
+            Looks good!
+          </div>
+          <div class="invalid-feedback">
+            Please choose a level.
+          </div>
     </div>
 
     <div class="mb-3">
         <label for="language" class="form-label">What language should the text be written in?</label>
-        <select name="reading[language]" id="language" class="form-select">
+        <select name="reading[language]" id="language" class="form-select" required>
             <%- include ('../partials/languages.ejs') %>
         </select>
+        <div class="valid-feedback">
+            Looks good!
+          </div>
+          <div class="invalid-feedback">
+            Please choose a language.
+          </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="words" class="form-label">How many words should the text be?</label>
+      <input type="number" name="reading[words]" id="words" class="form-control" required>
+      <div class="valid-feedback">
+        Looks good!
+      </div>
+      <div class="invalid-feedback">
+        Please tell us how long the text should be.
+      </div>
     </div>
 
     <button class="btn btn-danger w-100">Submit</button>
 </form>
+
+<script src="/javascripts/validateForms.js"></script>

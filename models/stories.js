@@ -10,6 +10,7 @@ const StorySchema = new Schema({
   age: String,
   level: String,
   language: String,
+  words: Number,
 });
 
 module.exports = mongoose.model("Story", StorySchema);
