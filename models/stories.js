@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const StorySchema = new Schema({
   title: String,
+  description: String,
   body: String,
   image: String,
   date: Date,

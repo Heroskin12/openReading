@@ -1,14 +1,25 @@
 <% layout('layout/boilerplate') -%>
-<form action="/readings" method="POST" novalidate class="validate-form">
+<form action="/readings" method="POST" novalidate class="validate-form mb-5">
     <div class="mb-3">
-        <label for="title" class="form-label">What will the text be about?</label>
+        <label for="title" class="form-label">Give your text a title.</label>
         <input type="text" name="reading[title]" id="title" placeholder="A fictional story of how the dinosaurs disappeared..." class="form-control" required>
+        <div id="titleHelpBlock" class="form-text">
+          This will be displayed as the name of the text on your profile and the home screen.
+        </div>
         <div class="valid-feedback">
             Looks good!
           </div>
           <div class="invalid-feedback">
             Please choose a title.
           </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="description" class="form-label">Give a description of what the text will be about.</label>
+      <textarea class="form-control" name="reading[description]" id="description" placeholder="A dinosaur that is not scary has to save his family from extinction..." required></textarea>
+      <div id="titleHelpBlock" class="form-text">
+        This will help tell us what you want to happen in the story. Include things like general plot, if there is a moral, what type of text this should be, etc.
+      </div>
     </div>
 
     <div class="mb-3">
@@ -63,7 +74,7 @@
 
     <div class="mb-3">
       <label for="words" class="form-label">How many words should the text be?</label>
-      <input type="number" name="reading[words]" id="words" class="form-control" required>
+      <input type="text" name="reading[words]" id="words" class="form-control" required>
       <div class="valid-feedback">
         Looks good!
       </div>

@@ -1,7 +1,7 @@
 <% layout('layout/boilerplate') -%>
 <a href="/readings/new">Add a Reading</a>
 <div class="row">
-  <% for (let reading of readings) { %>
+  <% for (let reading of readings.reverse()) { %>
     <div class="col-12 col-md-6 col-lg-4">
       <div class="card mb-5" >
           <img src="https://source.unsplash.com/collection/483251" class="card-img-top" alt="">

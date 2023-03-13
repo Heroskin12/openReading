@@ -9,6 +9,7 @@ const mongoose = require("mongoose");
 const Story = require("./models/stories");
 const methodOverride = require("method-override");
 const { Configuration, OpenAIApi } = require("openai");
+const splitParagraphs = require("./public/javascripts/textParse.js");
 const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.engine("ejs", engine);
@@ -17,6 +18,7 @@ const dbURL = process.env.DB_URL;
 const languages = require("./seeds/languages.js");
 const ages = require("./seeds/age.js");
 const levels = require("./seeds/level.js");
+const catchAsync = require("./utils/catchAsync.js");
 mongoose.set("strictQuery", true);
 
 mongoose.connect(dbURL);
@@ -46,74 +48,64 @@ app.get("/readings", async (req, res) => {
   res.render("readings/readings", { readings });
 });
 
-app.post("/readings", async (req, res) => {
-  const reading = new Story(req.body.reading);
-  const visiblePrompt = `You requested a ${reading.words}-word text about ${reading.title} in ${reading.language}. This text will be for suitable for ${reading.age} of ${reading.level} level.`;
-  const prompt = `Write a text about ${reading.title} in ${reading.language}. The text should be suitable for ${reading.age}. The people reading the text will have an ${reading.level} level of English. The text will have a total of ${reading.words} words.`;
+app.post("/readings", catchAsync(async (req, res, next) => {
+    const reading = new Story(req.body.reading);
+    const visiblePrompt = `You requested a ${reading.words}-word text about ${reading.description} in ${reading.language}. This text will be for suitable for ${reading.age} of ${reading.level} level.`;
+    const prompt = `Write a text about ${reading.description} in ${reading.language}. The text should be suitable for ${reading.age}. The people reading the text will have an ${reading.level} level of English. The text will have a total of ${reading.words} words. Add 5 multiple choice and a mix of 5 open and closed questions about the text.`;
 
-  try {
     const completion = await openai.createCompletion({
       model: "text-davinci-003",
       prompt: prompt,
       temperature: 1,
       max_tokens: 3000,
     });
+
     reading.body = completion.data.choices[0].text;
     reading.image = "https://source.unsplash.com/collection/483251";
     reading.date = Date.now();
     reading.lastUpdate = Date.now();
     await reading.save();
     res.redirect(`/readings/${reading._id}`);
-  } catch (error) {
-    if (error.response) {
-      console.log(error.response.status);
-      console.log(error.response.data);
-    } else {
-      console.log(error.message);
-    }
-  }
-});
 
-app.get("/readings/new", (req, res) => {
-  res.render("readings/new");
-});
+  }));
 
-app.get("/readings/:id", async (req, res) => {
+  app.get("/readings/new", (req, res) => {
+    res.render("readings/new");
+  });
+
+app.get("/readings/:id", catchAsync(async (req, res) => {
   const reading = await Story.findById(req.params.id);
-  res.render("readings/show", { reading });
-});
+  const body = splitParagraphs(reading.body);
+  res.render("readings/show", { reading, body });
+}));
 
-app.put("/readings/:id", async (req, res) => {
-  console.log("I am editing!");
+app.put("/readings/:id", catchAsync(async (req, res) => {
   const { id } = req.params;
   const reading = await Story.findByIdAndUpdate(
     id,
     { ...req.body.reading },
     { runValidators: true, new: true }
   );
-  //reading.lastUpdate = Date.now();
+  reading.lastUpdate = Date.now();
   if (!reading) {
     //req.flash('error', "Sorry, that reading does not exist!");
     res.redirect("/readings");
   }
   await reading.save();
   res.redirect(`/readings/${reading._id}`);
-});
+}));
 
-app.get("/readings/:id/edit", async (req, res) => {
+app.get("/readings/:id/edit", catchAsync(async (req, res) => {
   const { id } = req.params;
-  console.log(id);
   const reading = await Story.findById(id);
-  console.log(languages);
   res.render("readings/edit", { reading, ages, levels, languages });
-});
+}));
 
-app.delete("/readings/:id", async (req, res) => {
+app.delete("/readings/:id", catchAsync(async (req, res) => {
   const { id } = req.params;
-  console.log(id);
   const reading = await Story.findByIdAndDelete(id);
   res.redirect("/readings");
-});
+}));
 
 app.get("/lessons", (req, res) => {
   res.send("Here you can view all lesson plans!");
@@ -145,6 +137,10 @@ app.get("/register", (req, res) => {
 
 app.get("/login", (req, res) => {
   res.send(res.body);
+});
+
+app.use((err, req, res, next) => {
+  res.send("Something went wrong!");
 });
 
 app.listen(3000, () => {
